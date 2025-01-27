@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Question Papers - Study Buddy</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Styles for sidebar menu */
+        .dashboard {
+            display: flex;
+            height: 100vh;
+            width: 100%;
+        }
+    </style>
+    <link rel="stylesheet" href="../static/css/questionPaper.css">
+    <link rel="stylesheet" href="../static/css/home.css">
+</head>
+<body>
+    <div class="dashboard">
+        <div class="dashboard-nav">
+            <header>
+                <a href="#!" class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </a>
+                <a href="#" class="brand-logo" style="font-weight: bold; color:black">
+                    <i class="fas fa-book-open" style="color: black;"></i> 
+                    <span>STUDY BUDDY</span>
+                </a>
+            </header>
+            <nav class="dashboard-nav-list">
+                <a href="./homemain.html" class="dashboard-nav-item" style=" color:black">
+                    <i class="fas fa-home" style="color: black"></i>Home 
+                </a>
+                <div class="dashboard-nav-dropdown">
+                    <a href="#" class="dashboard-nav-item dashboard-nav-dropdown-toggle" style=" color:black">
+                        <i class="fas fa-file-upload" style="color:black"></i> Question Paper
+                    </a>
+                    <div class="dashboard-nav-dropdown-menu">
+                        <a href="./upload.html" class="dashboard-nav-dropdown-item" style=" color:black">
+                            <i class="fas fa-file-upload" style="color:black"></i> Upload
+                        </a>
+                        <a href="./download.html" class="dashboard-nav-dropdown-item" style=" color:black">
+                            <i class="fas fa-file-download" style="color:black"></i> Download
+                        </a>
+                    </div>
+                </div>
+                <a href="./generateAI.html" class="dashboard-nav-item" style=" color:black">
+                    <i class="fas fa-robot" style="color:black"></i> Generate Questions
+                </a>
+                <a href="#" class="dashboard-nav-item" style=" color:black">
+                        <i class="fas fa-search" style="color:black"></i> Search Questions 
+                </a>
+                <a href="./developers.html" class="dashboard-nav-item" style=" color:black">
+                        <i class="fas fa-users" style="color:black"></i> Developers 
+                </a>
+                <div class="nav-item-divider"></div>
+                <a href="./loginmain.html" class="dashboard-nav-item" style=" color:black">
+                    <i class="fas fa-sign-out-alt" style="color: black;"></i> Logout 
+                </a>
+            </nav>
+        </div>
+        <div class="dashboard-app">
+            <header class="dashboard-toolbar">
+                <a href="#!" class="menu-toggle">
+                    <i class="fas fa-bars" style="color: black;"></i>
+                </a>
+            </header>
+            <div class="dashboard-content">
+                <br><br>
+                <div class="container" style="background-color: #042865; border: 1px solid rgb(240, 166, 48); box-shadow: 0 2px 10px rgb(240, 166, 48)">
+                    <h1 style="font-family: 'Playfair Display', serif; -webkit-text-fill-color: white;">Question Papers</h1>
+                    <div class="box-container">
+                        <div class="box">
+                            <img src="../static/images/upload.gif" alt="GIF 1" width="150" height="150">
+                        </div>
+                        <div class="box">
+                            <img src="../static/images/download.gif" alt="GIF 2" width="150" height="150">
+                        </div>
+                    </div>
+                    <div class="button-group">
+                        <button onclick="window.location.href='upload.html'" style="background-color: rgb(240, 166, 48); color: black;">Upload - Question Paper</button>
+                        <button onclick="window.location.href='download.html'" style="background-color: rgb(240, 166, 48); color: black;">Download Question Paper</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="module" src="../static/js/home.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</html>

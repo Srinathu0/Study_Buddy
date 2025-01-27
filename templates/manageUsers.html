@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Questions</title>
+    <link rel="stylesheet" href="../static/css/genAI.css">
+    <link rel="stylesheet" href="../static/css/searchQs.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+          font-family: Arial, sans-serif;
+          background-color: #042865;
+          padding: 20px;
+        }
+        table {
+          width: 100%;
+          border-collapse: collapse;
+        }
+        th, td {
+          padding: 10px;
+          text-align: left;
+          border-bottom:1px solid rgb(240, 166, 48);
+          color:white;
+        }
+        th {
+          background-color: #042865;
+        }
+        button {
+          padding: 5px 10px;
+          margin: 5px;
+          cursor: pointer;
+          border: none;
+          border-radius: 4px;
+          display: inline-flex;
+          align-items: center;
+        }
+        .delete-btn {
+          background-color: #ff4c4c;
+          color: black;
+        }
+        .edit-btn {
+          background-color: #4caf50;
+          color: black;
+        }
+        .add-user {
+          margin-top: 20px;
+          padding: 10px 20px;
+          background-color: rgb(240, 166, 48);
+          color: black;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+        }
+        .dropdown {
+          cursor: pointer;
+          background-color: #042865;
+          color: white;
+          padding: 10px;
+          width: 100%;
+          text-align: left;
+          border: 1px solid rgb(240, 166, 48);
+          /*box-shadow: 0 2px 10px rgb(240, 166, 48);*/
+        }
+        .dropdown-content {
+          display: none;
+          padding: 10px;
+          background-color: #fff;
+          width: 300px;        
+        }
+        .dropdown.active .dropdown-content {
+          display: block;
+        }
+        .icon {
+          margin-right: 8px;
+        }
+        .user-count {
+          font-weight: bold;
+          margin-top: -20px;
+        }
+        /* Popup Styles */
+        .popup-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        }
+        .popup-content {
+        background-color: white;
+        padding: 20px;
+        border-radius: 5px;
+        width: 300px;
+        text-align: center;
+        }
+        .popup-content h3 {
+        margin-bottom: 20px;
+        }
+        .popup-buttons {
+        display: flex;
+        justify-content: space-between;
+        }
+        .popup-buttons button {
+        padding: 10px 20px;
+        }
+        .hidden {
+            display: none;
+        }
+        
+        /* New form styling */
+        .add-user-form {
+            margin-top: 15px;
+            padding: 20px;
+            background-color: #042865;
+            border-radius: 4px;
+            color: white;
+            display: none; /* Initially hidden */
+            border: 1px solid rgb(240, 166, 48);
+        }
+        
+        .add-user-form label {
+            font-family: 'Playfair Display', serif;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .add-user-form input {
+            width: 50%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            border: 1px solid rgb(240, 166, 48);
+            font-family: 'Arial', sans-serif;
+        }
+        
+        .add-user-form button {
+            padding: 10px 20px;
+            background-color: rgb(240, 166, 48);
+            color: black;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            font-weight: bold;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .add-user-form {
+            display: flex;
+            flex-direction: column;
+            display: none;
+            margin-top: 20px;
+            max-width: 500px;
+            color: white;
+        }
+
+        .form-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .form-row label {
+            width: 100px; /* Adjust width as needed */
+            font-weight: bold;
+            color: white;
+        }
+
+        .form-row input {
+            flex: 1;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid rgb(240, 166, 48);
+        }
+    </style>
+    <link rel="stylesheet" href="../static/css/home.css">
+</head>
+<body>
+    <div class="dashboard">
+        <div class="dashboard-nav">
+            <header>
+                <a href="#!" class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </a>
+                <a href="#" class="brand-logo" style="font-weight: bold; color:black">
+                    <i class="fas fa-book-open" style="color: black;"></i> 
+                    <span>STUDY BUDDY</span>
+                </a>
+            </header>
+            <nav class="dashboard-nav-list">
+                <a href="./adminMain.html" class="dashboard-nav-item" style="color:black">
+                    <i class="fas fa-home" style="color: black"></i> Home 
+                </a>
+                <a href="./manageUsers.html" class="dashboard-nav-item" style=" color:black">
+                  <i class="fas fa-users" style="color: black"></i>Manage Users 
+              </a>
+              <a href="./managePDF.html" class="dashboard-nav-item" style=" color:black">
+                  <i class="fas fa-file-alt" style="color: black"></i>Manage Question Paper 
+              </a>
+              <a href="./generateReport.html" class="dashboard-nav-item" style=" color:black">
+                  <i class="fas fa-chart-line" style="color: black"></i>Generate Report 
+              </a> 
+                <div class="dashboard-nav-dropdown">
+                    <a href="./question-paper.html" class="dashboard-nav-item dashboard-nav-dropdown-toggle" style="color:black">
+                        <i class="fas fa-file-upload" style="color:black"></i> Question Paper
+                    </a>
+                    <div class="dashboard-nav-dropdown-menu">
+                        <a href="./upload.html" class="dashboard-nav-dropdown-item" style="color:black">
+                            <i class="fas fa-file-upload" style="color:black"></i> Upload
+                        </a>
+                        <a href="./download.html" class="dashboard-nav-dropdown-item" style="color:black">
+                            <i class="fas fa-file-download" style="color:black"></i> Download
+                        </a>
+                    </div>
+                </div>
+                <a href="./generateAI.html" class="dashboard-nav-item" style="color:black">
+                    <i class="fas fa-robot" style="color:black"></i> Generate Questions
+                </a>
+                <a href="./searchQs.html" class="dashboard-nav-item" style="color:black">
+                    <i class="fas fa-search" style="color:black"></i> Search Questions 
+                </a>
+                <a href="./developers.html" class="dashboard-nav-item" style="color:black">
+                    <i class="fas fa-users" style="color:black"></i> Developers 
+                </a>
+                <div class="nav-item-divider"></div>
+                <a href="./loginmain.html" class="dashboard-nav-item" style="color:black">
+                    <i class="fas fa-sign-out-alt" style="color: black;"></i> Logout 
+                </a>
+            </nav>
+        </div>
+
+        <div class="dashboard-app">
+            <header class="dashboard-toolbar">
+                <a href="#!" class="menu-toggle">
+                    <i class="fas fa-bars" style="color: black;"></i>
+                </a>
+            </header>
+            <div class="dashboard-content">
+                <br><br>
+                <div class="container" style="border: 1px solid rgb(240, 166, 48); box-shadow: 0 2px 10px rgb(240, 166, 48);">
+                    <div class="container mt-5">
+                        <h1 class="text-center" style="font-family: 'Playfair Display', serif; color: white;">Manage Users</h1><br><br>
+                        <div class="user-count">
+                            <h2 style="font-family: 'Playfair Display', serif; color: white;"><i class="fas fa-users icon text-center" style="color: white;"></i> Total Users: <span id="userCount">0</span></h2>
+                        </div><br>
+                        <table id="userTable">
+                            <thead>
+                              <tr>
+                                <th style="font-family: 'Playfair Display', serif; color: white;"><i class="fas fa-user icon" style="color: white;"></i>Name</th>
+                                <th style="font-family: 'Playfair Display', serif; color: white;"><i class="fas fa-info-circle icon" style="color: white;"></i>Details</th>
+                                <th style="font-family: 'Playfair Display', serif; color: white;"><i class="fas fa-cogs icon" style="color: white;"></i>Actions</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <!-- Users will be dynamically inserted here -->
+                            </tbody>
+                          </table>
+                          <button class="add-user" onclick="toggleAddUserForm()" style="font-family: 'Playfair Display', serif;">
+                            <i class="fas fa-plus icon"></i>Add User
+                          </button>
+                           <!-- Add User Form -->
+                          <!-- <div id="addUserForm" class="add-user-form">
+                            <label for="firstName">First Name</label>
+                            <input type="text" id="firstName" placeholder="Enter First Name">
+                            
+                            <label for="lastName">Last Name</label>
+                            <input type="text" id="lastName" placeholder="Enter Last Name">
+                            
+                            <label for="phone">Phone</label>
+                            <input type="tel" id="phone" placeholder="Enter Phone Number">
+                            
+                            <label for="email">Email</label>
+                            <input type="email" id="email" placeholder="Enter Email">
+                            
+                            <label for="password">Password</label>
+                            <input type="password" id="password" placeholder="Enter Password">
+                            <br>
+                            <button onclick="submitNewUser()">Submit</button>
+                        </div> -->
+                        <div id="addUserForm" class="add-user-form">
+                          <div class="form-row">
+                              <label for="firstName">First Name</label>
+                              <input type="text" id="firstName" placeholder="Enter First Name">
+                          </div>
+                          
+                          <div class="form-row">
+                              <label for="lastName">Last Name</label>
+                              <input type="text" id="lastName" placeholder="Enter Last Name">
+                          </div>
+                          
+                          <div class="form-row">
+                              <label for="phone">Phone</label>
+                              <input type="tel" id="phone" placeholder="Enter Phone Number">
+                          </div>
+                          
+                          <div class="form-row">
+                              <label for="email">Email</label>
+                              <input type="email" id="email" placeholder="Enter Email">
+                          </div>
+                          
+                          <div class="form-row">
+                              <label for="password">Password</label>
+                              <input type="password" id="password" placeholder="Enter Password">
+                          </div>
+                          <br>
+                          <button onclick="submitNewUser()">Submit</button>
+                      </div>                      
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- Confirmation Popup -->
+<div class="popup-overlay" id="confirmPopup">
+    <div class="popup-content" style="background-color: rgb(240, 166, 48);">
+      <h3 style="color: black;">Are you sure you want to delete this user?</h3>
+      <div class="popup-buttons">
+        <button id="confirmDelete" class="delete-btn" style="color: black; font-weight: bold;">Yes</button>
+        <button id="cancelDelete" class="edit-btn" style="color: black; font-weight: bold;">No</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success Popup -->
+  <div class="popup-overlay" id="successPopup">
+    <div class="popup-content" style="background-color: rgb(240, 166, 48);">
+      <h3 style="color: black;">User deleted successfully!</h3>
+      <button onclick="closePopup('successPopup')" style="background-color: #4caf50;">OK</button>
+    </div>
+  </div> 
+</body>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+<script type="module" src="../static/js/home.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyC02PDf8lXPB6nKJjXgtqS8LvIbmeO0r5E",
+      authDomain: "study-buddy-2aba2.firebaseapp.com",
+      projectId: "study-buddy-2aba2",
+      storageBucket: "study-buddy-2aba2.appspot.com",
+      messagingSenderId: "850734171944",
+      appId: "1:850734171944:web:16e758e5f3dcb6890cf21d",
+      measurementId: "G-VTMHQ6R1D4",
+      databaseURL: "https://study-buddy-2aba2-default-rtdb.asia-southeast1.firebasedatabase.app"
+    };
+
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.database(app);
+
+    let userIdToDelete = null;  // To store the userId for confirmation
+
+    function loadUsers() {
+      const userTable = document.getElementById('userTable').getElementsByTagName('tbody')[0];
+      const userCountElement = document.getElementById('userCount');
+      let userCount = 0;
+
+      db.ref('users').once('value', (snapshot) => {
+        snapshot.forEach(user => {
+          const userId = user.key;
+          const userData = user.val();
+          userCount++;  // Increment user count
+
+          // Create row
+          const row = userTable.insertRow();
+          const nameCell = row.insertCell(0);
+          const detailsCell = row.insertCell(1);
+          const actionsCell = row.insertCell(2);
+
+          // Display firstName and lastName
+          const fullName = `${userData.firstName} ${userData.lastName}`;
+          nameCell.innerHTML = fullName;
+
+          // Dropdown for user details
+          const dropdown = document.createElement('div');
+          dropdown.className = 'dropdown';
+          dropdown.innerHTML = `
+            <div class="dropdown-header" style="background-color: #042865">${fullName} <u>(Click to view details)</u></div>
+            <div class="dropdown-content" style="background-color: #042865">
+              <p><i class="fas fa-envelope icon"></i><strong>Email:</strong> ${userData.email}</p>
+              <p><i class="fas fa-phone-alt icon"></i><strong>Phone:</strong> ${userData.phone}</p>
+            </div>
+          `;
+          dropdown.querySelector('.dropdown-header').addEventListener('click', function() {
+            dropdown.classList.toggle('active');
+          });
+          detailsCell.appendChild(dropdown);
+
+          // Action buttons
+          const deleteButton = document.createElement('button');
+          deleteButton.className = 'delete-btn';
+          deleteButton.innerHTML = '<i class="fas fa-trash-alt icon"></i>Delete';
+          deleteButton.onclick = () => confirmDelete(userId);
+
+          const editButton = document.createElement('button');
+          editButton.className = 'edit-btn';
+          editButton.innerHTML = '<i class="fas fa-edit icon"></i>Edit';
+          editButton.onclick = () => editUser(userId);
+
+          actionsCell.appendChild(deleteButton);
+          actionsCell.appendChild(editButton);
+        });
+
+        // Update the user count display
+        userCountElement.textContent = userCount;
+      });
+    }
+
+    function confirmDelete(userId) {
+      userIdToDelete = userId;
+      document.getElementById('confirmPopup').style.display = 'flex';  // Show confirmation popup
+    }
+
+    // When user confirms deletion
+    document.getElementById('confirmDelete').onclick = function() {
+      deleteUser(userIdToDelete);
+      closePopup('confirmPopup');
+    };
+
+    // Cancel deletion
+    document.getElementById('cancelDelete').onclick = function() {
+      closePopup('confirmPopup');
+    };
+
+    function deleteUser(userId) {
+      db.ref('users/' + userId).remove();
+      showPopup('successPopup');  // Show success popup
+      setTimeout(() => location.reload(), 1500);  // Reload the page after 1.5s to refresh the user list
+    }
+
+    function showPopup(popupId) {
+      document.getElementById(popupId).style.display = 'flex';
+    }
+
+    function closePopup(popupId) {
+      document.getElementById(popupId).style.display = 'none';
+    }
+
+    function editUser(userId) {
+      window.location.href = `editUser.html?userId=${userId}`;
+      // Process and update user details in Firebase (not implemented here for brevity)
+    }
+
+    function addUser() {
+      const newUserDetails = prompt('Enter new user details (e.g., firstName, lastName, email, role):');
+      // Process and add new user to Firebase (not implemented here for brevity)
+    }
+
+    function toggleAddUserForm() {
+            const form = document.getElementById('addUserForm');
+            form.style.display = form.style.display === 'none' || form.style.display === '' ? 'block' : 'none';
+        }
+        
+        function submitNewUser() {
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const phone = document.getElementById('phone').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // Code to submit new user details to Firebase
+            const newUserRef = db.ref('users').push();
+            newUserRef.set({
+                firstName,
+                lastName,
+                phone,
+                email,
+                password
+            }, (error) => {
+                if (error) {
+                    alert("Error adding user: " + error.message);
+                } else {
+                    alert("User added successfully!");
+                    location.reload();  // Refresh the page
+                }
+            });
+        }
+        
+    // Load users on page load
+    window.onload = loadUsers;
+  </script> 
+</html>

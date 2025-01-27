@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Details - Study Buddy</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet" href="../static/css/upload.css">
+    <link rel="stylesheet" href="../static/css/home.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard">
+        <div class="dashboard-nav">
+            <header>
+                <a href="#!" class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </a>
+                <a href="#" class="brand-logo" style="font-weight: bold; color:black">
+                    <i class="fas fa-book-open" style="color: black;"></i> 
+                    <span>STUDY BUDDY</span>
+                </a>
+            </header>
+            <nav class="dashboard-nav-list">
+                <a href="./homemain.html" class="dashboard-nav-item" style=" color:black">
+                    <i class="fas fa-home" style="color: black"></i>Home 
+                </a>
+                <div class="dashboard-nav-dropdown">
+                    <a href="./question-paper.html" class="dashboard-nav-item dashboard-nav-dropdown-toggle" style=" color:black">
+                        <i class="fas fa-file-upload" style="color:black"></i> Question Paper
+                    </a>
+                    <div class="dashboard-nav-dropdown-menu">
+                        <a href="./upload.html" class="dashboard-nav-dropdown-item" style=" color:black">
+                            <i class="fas fa-file-upload" style="color:black"></i> Upload
+                        </a>
+                        <a href="./download.html" class="dashboard-nav-dropdown-item" style=" color:black">
+                            <i class="fas fa-file-download" style="color:black"></i> Download
+                        </a>
+                    </div>
+                </div>
+                <a href="./generateAI.html" class="dashboard-nav-item" style=" color:black">
+                    <i class="fas fa-robot" style="color:black"></i> Generate Questions
+                </a>
+                <a href="./searchQs.html" class="dashboard-nav-item" style=" color:black">
+                        <i class="fas fa-search" style="color:black"></i> Search Questions 
+                </a>
+                <a href="./developers.html" class="dashboard-nav-item" style=" color:black">
+                        <i class="fas fa-users" style="color:black"></i> Developers 
+                </a>
+                <div class="nav-item-divider"></div>
+                <a href="./loginmain.html" class="dashboard-nav-item" style=" color:black">
+                    <i class="fas fa-sign-out-alt" style="color: black;"></i> Logout 
+                </a>
+            </nav>
+        </div>
+
+        <div class="dashboard-app">
+            <header class="dashboard-toolbar">
+                <a href="#!" class="menu-toggle">
+                    <i class="fas fa-bars" style="color: black;"></i>
+                </a>
+            </header>
+            <div class="dashboard-content">
+                <div class="container">
+                    <main>
+                        <section id="upload-assignment" class="section-box" style="background-color: #042865;">
+                            <h2 style="font-family: 'Playfair Display', serif; color: white;">Upload Question Paper</h2>
+                            <div class="instructions">
+                                <h3 style="font-family: 'Playfair Display', serif; color:white">Instructions</h3>
+                                <ul>
+                                    <li style="font-family: 'Playfair Display', serif; color:white">Only upload relevant question papers with respective course code.</li>
+                                    <li style="font-family: 'Playfair Display', serif; color:white">Please enter the Course Code in Capital Letters (e.g: SWE1002, CSE3501).</li>
+                                    <li style="font-family: 'Playfair Display', serif; color:white">Please choose appropriate Exam Type.</li>
+                                    <li style="font-family: 'Playfair Display', serif; color:white">Ensure that your files are in a supported format (only PDF).</li>
+                                    <li style="font-family: 'Playfair Display', serif; color:white">Inform the website administrator if you encounter any technical problems.</li>
+                                </ul>
+                            </div>
+                            <form id="uploadForm">
+                                <label for="courseCode" style="font-family: 'Playfair Display', serif; color:white">Course Code:</label>
+                                <input type="text" id="courseCode" name="courseCode" placeholder="Course Code" style="background-color: rgb(174, 174, 174);" required >
+                                <br><br>
+                                <label for="category" style="font-family: 'Playfair Display', serif; color:white">Choose Exam Type:</label>
+                                <select id="category" name="category" style="background-color: rgb(174, 174, 174);" required >
+                                    <option value="" disabled selected>Select Category</option>
+                                    <option value="Cat1">Cat 1</option>
+                                    <option value="Cat2">Cat 2</option>
+                                    <option value="Fat">Fat</option>
+                                </select>
+                                <br><br>
+                                <label for="fileUpload" style="font-family: 'Playfair Display', serif; color:white">Upload PDF:</label>
+                                <input type="file" id="fileUpload" name="fileUpload" accept=".pdf" style="background-color: rgb(174, 174, 174);"   required>
+                                <br><br>
+                                <div class="button-container">
+                                    <button id="backButton" type="button" onclick="window.history.back();" style="background-color: rgb(240, 166, 48); color: #000;">Back</button>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <button id="submitButton" type="submit"  style="background-color: rgb(240, 166, 48); color: black;">Submit</button>
+                                </div>  
+                            </form>
+                        </section>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="popupMessage" class="popup-message">
+        <span id="popupMessageText"></span>
+        <button id="closePopupButton">Close</button>
+    </div>
+    <div id="loadingScreen" class="loading-screen" style="display: none;">
+        <div class="spinner"></div>
+        <p>Uploading...</p>
+    </div>
+</body>
+<script type="module" src="../static/js/upload.js"></script>
+<script src="../static/js/home.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</html>

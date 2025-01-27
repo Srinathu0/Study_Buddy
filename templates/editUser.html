@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit User</title>
+    <link rel="stylesheet" href="../static/css/genAI.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/home.css">
+    <style>
+        body {
+          font-family: 'Playfair Display', serif;
+          background-color: #042865;
+          padding: 20px;
+        }
+        h1 {
+          text-align: center;
+        }
+        .user-details, .edit-form {
+          font-family: 'Playfair Display', serif;
+          max-width: 600px;
+          margin: auto;
+          background: #042865;
+          border: 1px solid rgb(240, 166, 48);
+          padding: 20px;
+          border-radius: 8px;
+          box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+          margin-bottom: 20px;
+        }
+        table {
+          font-family: 'Playfair Display', serif;
+          width: 100%;
+          border-collapse: collapse;
+          margin-bottom: 15px;
+          font-weight: bold; 
+        }
+        th, td {
+          font-family: 'Playfair Display', serif;
+          padding: 8px 12px;
+          text-align: left;
+          font-weight: bold;
+          color: white;
+        }
+        th {
+          font-family: 'Playfair Display', serif;
+           color: white;
+          font-weight: bold;
+          border-top: 1px solid rgb(240, 166, 48);
+          border-bottom: 1px solid rgb(240, 166, 48);
+        }
+        .save-button {
+          width: 100%;
+          padding: 10px;
+          font-size: 16px;
+          color: black;
+          background-color: #28a745;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="phone"] {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        color: #333;
+        background-color: #f1f1f1;
+        border: 2px solid rgb(240, 166, 48);
+        border-radius: 5px;
+        transition: all 0.3s ease;
+        outline: none;
+        box-sizing: border-box;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="phone"]:focus {
+        border-color: #042865;
+        background-color: #e6f3ff;
+        color: #042865;
+        }
+
+        /* Style for the input field's hover effect */
+        input[type="text"]:hover,
+        input[type="email"]:hover,
+        input[type="phone"]:hover {
+        background-color: #f5f5f5;
+        border-color: #0056b3;
+        }
+
+        /* Styling for the popup */
+        .popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .popup-content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 300px;
+            width: 100%;
+        }
+
+        .popup.success .popup-content {
+            /*background-color: #4CAF50; /* Green for success */
+            background-color: rgb(240, 166, 48);
+            color: rgb(0, 0, 0);
+        }
+
+        .popup.error .popup-content {
+            background-color: #f44336; /* Red for error */
+            color: white;
+        }
+
+        .hidden {
+            display: none;
+        }
+        /* Style for password input field */
+        #password-popup input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            color: #333;
+            background-color: #f1f1f1;
+            border: 2px solid rgb(240, 166, 48);
+            border-radius: 5px;
+            margin: 15px 0;
+            transition: all 0.3s ease;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        #password-popup input[type="password"]:focus {
+            border-color: #042865;
+            background-color: #e6f3ff;
+            color: #042865;
+        }
+
+        /* Style for submit button */
+        #password-popup button {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            color: black;
+            background-color: #28a745;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #password-popup button:hover {
+            background-color: #218838;
+        }
+      </style>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="dashboard-nav">
+            <header>
+                <a href="#!" class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </a>
+                <a href="#" class="brand-logo" style="font-weight: bold; color:black">
+                    <i class="fas fa-book-open" style="color: black;"></i> 
+                    <span>STUDY BUDDY</span>
+                </a>
+            </header>
+            <nav class="dashboard-nav-list">
+                <a href="./adminMain.html" class="dashboard-nav-item" style="color:black">
+                    <i class="fas fa-home" style="color: black"></i> Home 
+                </a>
+                <a href="./manageUsers.html" class="dashboard-nav-item" style=" color:black">
+                  <i class="fas fa-users" style="color: black"></i>Manage Users 
+              </a>
+              <a href="./managePDF.html" class="dashboard-nav-item" style=" color:black">
+                  <i class="fas fa-file-alt" style="color: black"></i>Manage Question Paper 
+              </a>
+              <a href="./generateReport.html" class="dashboard-nav-item" style=" color:black">
+                  <i class="fas fa-chart-line" style="color: black"></i>Generate Report 
+              </a> 
+                <div class="dashboard-nav-dropdown">
+                    <a href="./question-paper.html" class="dashboard-nav-item dashboard-nav-dropdown-toggle" style="color:black">
+                        <i class="fas fa-file-upload" style="color:black"></i> Question Paper
+                    </a>
+                    <div class="dashboard-nav-dropdown-menu">
+                        <a href="./upload.html" class="dashboard-nav-dropdown-item" style="color:black">
+                            <i class="fas fa-file-upload" style="color:black"></i> Upload
+                        </a>
+                        <a href="./download.html" class="dashboard-nav-dropdown-item" style="color:black">
+                            <i class="fas fa-file-download" style="color:black"></i> Download
+                        </a>
+                    </div>
+                </div>
+                <a href="./generateAI.html" class="dashboard-nav-item" style="color:black">
+                    <i class="fas fa-robot" style="color:black"></i> Generate Questions
+                </a>
+                <a href="#" class="dashboard-nav-item" style="color:black">
+                    <i class="fas fa-search" style="color:black"></i> Search Questions 
+                </a>
+                <a href="./developers.html" class="dashboard-nav-item" style="color:black">
+                    <i class="fas fa-users" style="color:black"></i> Developers 
+                </a>
+                <div class="nav-item-divider"></div>
+                <a href="./loginmain.html" class="dashboard-nav-item" style="color:black">
+                    <i class="fas fa-sign-out-alt" style="color: black;"></i> Logout 
+                </a>
+            </nav>
+        </div>
+
+        <div class="dashboard-app">
+            <header class="dashboard-toolbar">
+                <a href="#!" class="menu-toggle">
+                    <i class="fas fa-bars" style="color: black;"></i>
+                </a>
+            </header>
+            <div class="dashboard-content">
+                <br><br>
+                <div class="container" style="border: 1px solid rgb(240, 166, 48); box-shadow: 0 2px 10px rgb(240, 166, 48);">
+                    <div class="container mt-5">
+                        <h1 class="text-center" style="font-family: 'Playfair Display', serif; color: white;">Edit User Details</h1><br><br>
+                        <!-- Display existing user details -->
+                        <div class="user-details">
+                            <h2 style="font-family: 'Playfair Display', serif; font-weight: bold; color: white;">Current Details</h2>
+                            <table id="currentUserTable">
+                            <tr><th>Field</th><th>Value</th></tr>
+                            <tr><td>First Name</td><td id="currentFirstName"></td></tr>
+                            <tr><td>Last Name</td><td id="currentLastName"></td></tr>
+                            <tr><td>Email</td><td id="currentEmail"></td></tr>
+                            <tr><td>Phone</td><td id="currentPhone"></td></tr>
+                            <!-- Add more fields if needed -->
+                            </table>
+                        </div>
+
+                        <!-- Editable form for updating user details -->
+                        <div class="edit-form">
+                            <h2 style="font-family: 'Playfair Display', serif; font-weight: bold; color: white; border-bottom: 1px solid rgb(240, 166, 48);">Edit Details</h2>
+                            <table>
+                            <tr>
+                                <td>First Name</td>
+                                <td><input type="text" id="editFirstName" /></td>
+                            </tr>
+                            <tr>
+                                <td>Last Name</td>
+                                <td><input type="text" id="editLastName" /></td>
+                            </tr>
+                            <tr>
+                                <td>Email</td>
+                                <td><input type="email" id="editEmail" /></td>
+                            </tr>
+                            <tr>
+                                <td>Phone</td>
+                                <td><input type="phone" id="editPhone"></td>
+                            </tr>
+                            <!-- Add more fields as needed -->
+                            </table>
+                            <button class="save-button" onclick="saveUserDetails()">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="success-popup" class="popup hidden">
+        <div class="popup-content"> 
+            <h3 id="popup-message">Message</h3>
+            <p>You will be redirected shortly...</p>
+        </div>
+    </div>
+    <div id="password-popup" class="popup hidden">
+      <div class="popup-content" style="background-color: rgb(240, 166, 48);">
+          <h3 style="color: black;">Enter Secret Password</h3>
+          <input type="password" id="secretPassword" placeholder="Enter Password" />
+          <button onclick="verifyPassword()">Submit</button>
+          <p id="error-message" style="color: red; display: none;">Incorrect password. Please try again.</p>
+      </div>
+  </div>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+<script type="module" src="../static/js/home.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyC02PDf8lXPB6nKJjXgtqS8LvIbmeO0r5E",
+      authDomain: "study-buddy-2aba2.firebaseapp.com",
+      projectId: "study-buddy-2aba2",
+      storageBucket: "study-buddy-2aba2.appspot.com",
+      messagingSenderId: "850734171944",
+      appId: "1:850734171944:web:16e758e5f3dcb6890cf21d",
+      measurementId: "G-VTMHQ6R1D4",
+      databaseURL: "https://study-buddy-2aba2-default-rtdb.asia-southeast1.firebasedatabase.app"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const urlParams = new URLSearchParams(window.location.search);
+    const userId = urlParams.get('userId');
+    const SECRET_PASSWORD = "9541";
+    const popup = document.getElementById("success-popup");
+    const popupMessage = document.getElementById("popup-message");
+    const passwordPopup = document.getElementById("password-popup");
+    const errorMessage = document.getElementById("error-message");
+
+    function fetchUserDetails() {
+      if (userId) {
+        db.ref("users/" + userId).once("value").then((snapshot) => {
+          const userData = snapshot.val();
+          if (userData) {
+            document.getElementById("currentFirstName").innerText = userData.firstName || '';
+            document.getElementById("currentLastName").innerText = userData.lastName || '';
+            document.getElementById("currentEmail").innerText = userData.email || '';
+            document.getElementById("currentPhone").innerText = userData.phone || '';
+
+            document.getElementById("editFirstName").value = userData.firstName || '';
+            document.getElementById("editLastName").value = userData.lastName || '';
+            document.getElementById("editEmail").value = userData.email || '';
+            document.getElementById("editPhone").value = userData.phone || '';
+          } else {
+            alert("User not found!");
+          }
+        }).catch((error) => {
+          console.error("Error fetching user details:", error);
+        });
+      } else {
+        alert("No User ID provided!");
+      }
+    }
+
+    function saveUserDetails() {     
+      passwordPopup.classList.remove("hidden");
+    }
+
+    function verifyPassword() {
+            const enteredPassword = document.getElementById("secretPassword").value;
+            if (enteredPassword === SECRET_PASSWORD) {
+                updateUserDetails();
+                passwordPopup.classList.add("hidden"); 
+                errorMessage.style.display = "none";
+            } else {
+                errorMessage.style.display = "block";
+            }
+        }
+
+        function updateUserDetails() {
+            const updatedData = {
+                firstName: document.getElementById("editFirstName").value,
+                lastName: document.getElementById("editLastName").value,
+                email: document.getElementById("editEmail").value,
+                phone: document.getElementById("editPhone").value
+            };
+            db.ref("users/" + userId).update(updatedData).then(() => {
+                popupMessage.textContent = "Updated Successfully!";
+                popup.classList.remove("hidden", "error");
+                popup.classList.add("show", "success");
+                setTimeout(() => {
+                    window.location.href = "manageUsers.html";
+                }, 3000);
+            }).catch((error) => {
+                console.error("Error updating user details:", error);
+                popupMessage.textContent = "Unable to Update!";
+                popup.classList.remove("hidden", "success");
+                popup.classList.add("show", "error");
+                setTimeout(() => {
+                    popup.classList.add("hidden");
+                }, 3000);
+            });
+        }
+
+        ///const admin = require("firebase-admin");
+
+// async function updateUserDetails(userId, newDetails) {
+  // Update user information in Firebase Database
+//   await firebase.database().ref('users/' + userId).update(newDetails);
+
+//   // Update Firebase Authentication details if email/password changed
+//   if (newDetails.email || newDetails.password) {
+//     await firebase.auth().updateUser(userId, {
+//       email: newDetails.email,
+//       password: newDetails.password,
+//     });
+//   }
+
+//   // Revoke old sessions
+//   await admin.auth().revokeRefreshTokens(userId);
+//   console.log("User sessions revoked - user will need to use updated credentials.");
+// }
+
+        
+  window.onload = fetchUserDetails;
+  </script>
+</html>

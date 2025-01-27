@@ -1,0 +1,441 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Users</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      padding: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background-color: #f8f8f8;
+    }
+    button {
+      padding: 5px 10px;
+      margin: 5px;
+      cursor: pointer;
+      border: none;
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+    }
+    .delete-btn {
+      background-color: #ff4c4c;
+      color: white;
+    }
+    .edit-btn {
+      background-color: #4caf50;
+      color: white;
+    }
+    .add-user {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #008CBA;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .dropdown {
+      cursor: pointer;
+      background-color: #f8f8f8;
+      padding: 10px;
+      width: 100%;
+      text-align: left;
+    }
+    .dropdown-content {
+      display: none;
+      padding: 10px;
+      border: 1px solid #ddd;
+      background-color: #fff;
+    }
+    .dropdown.active .dropdown-content {
+      display: block;
+    }
+    .icon {
+      margin-right: 8px;
+    }
+    .user-count {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    /* Form Styles */
+    .edit-form {
+      margin-top: 10px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      background-color: #f9f9f9;
+    }
+    .edit-form input {
+      margin-bottom: 10px;
+      padding: 8px;
+      width: 95%;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    .edit-form button {
+      margin-top: 10px;
+      background-color: #4caf50;
+      color: white;
+      cursor: pointer;
+    }
+
+    /* Popup Styles */
+    .popup-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .popup-content {
+      background-color: white;
+      padding: 20px;
+      border-radius: 5px;
+      width: 300px;
+      text-align: center;
+    }
+    .popup-content h3 {
+      margin-bottom: 20px;
+    }
+    .popup-buttons {
+      display: flex;
+      justify-content: space-between;
+    }
+    .popup-buttons button {
+      padding: 10px 20px;
+    }
+  </style>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+  <h1>Manage Users</h1>
+
+  <div class="user-count">
+    <i class="fas fa-users icon"></i> Total Users: <span id="userCount">0</span>
+  </div>
+
+  <table id="userTable">
+    <thead>
+      <tr>
+        <th><i class="fas fa-user icon"></i>Name</th>
+        <th><i class="fas fa-info-circle icon"></i>Details</th>
+        <th><i class="fas fa-cogs icon"></i>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+
+  <button class="add-user" onclick="addUser()">
+    <i class="fas fa-plus icon"></i>Add User
+  </button>
+
+  <div class="popup-overlay" id="confirmPopup">
+    <div class="popup-content">
+      <h3>Are you sure you want to delete this user?</h3>
+      <div class="popup-buttons">
+        <button id="confirmDelete" class="delete-btn">Yes</button>
+        <button id="cancelDelete" class="edit-btn">No</button>
+      </div>
+    </div>
+  </div>
+  <div class="popup-overlay" id="successPopup">
+    <div class="popup-content">
+      <h3>User deleted successfully!</h3>
+      <button onclick="closePopup('successPopup')">OK</button>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyC02PDf8lXPB6nKJjXgtqS8LvIbmeO0r5E",
+      authDomain: "study-buddy-2aba2.firebaseapp.com",
+      projectId: "study-buddy-2aba2",
+      storageBucket: "study-buddy-2aba2.appspot.com",
+      messagingSenderId: "850734171944",
+      appId: "1:850734171944:web:16e758e5f3dcb6890cf21d",
+      measurementId: "G-VTMHQ6R1D4",
+      databaseURL: "https://study-buddy-2aba2-default-rtdb.asia-southeast1.firebasedatabase.app"
+    };
+
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.database(app);
+
+    let userIdToDelete = null;  // To store the userId for confirmation
+    let editFormDisplayed = {}; // To track which user's form is displayed
+
+    function loadUsers() {
+      const userTable = document.getElementById('userTable').getElementsByTagName('tbody')[0];
+      const userCountElement = document.getElementById('userCount');
+      let userCount = 0;
+
+      db.ref('users').once('value', (snapshot) => {
+        snapshot.forEach(user => {
+          const userId = user.key;
+          const userData = user.val();
+          userCount++;  // Increment user count
+
+          // Create row
+          const row = userTable.insertRow();
+          const nameCell = row.insertCell(0);
+          const detailsCell = row.insertCell(1);
+          const actionsCell = row.insertCell(2);
+
+          // Display firstName and lastName
+          const fullName = `${userData.firstName} ${userData.lastName}`;
+          nameCell.innerHTML = fullName;
+
+          // Dropdown for user details
+          const dropdown = document.createElement('div');
+          dropdown.className = 'dropdown';
+          dropdown.innerHTML = `
+            <div class="dropdown-header">${fullName} (Click to view details)</div>
+            <div class="dropdown-content">
+              <p><strong>Email:</strong> ${userData.email}</p>
+              <p><strong>Role:</strong> ${userData.role}</p>
+            </div>
+          `;
+          dropdown.querySelector('.dropdown-header').addEventListener('click', function() {
+            dropdown.classList.toggle('active');
+          });
+          detailsCell.appendChild(dropdown);
+
+          // Action buttons
+          const deleteButton = document.createElement('button');
+          deleteButton.className = 'delete-btn';
+          deleteButton.innerHTML = '<i class="fas fa-trash-alt icon"></i>Delete';
+          deleteButton.onclick = () => confirmDelete(userId);
+
+          const editButton = document.createElement('button');
+          editButton.className = 'edit-btn';
+          editButton.innerHTML = '<i class="fas fa-edit icon"></i>Edit';
+          editButton.onclick = () => toggleEditForm(userId, row, userData);
+
+          actionsCell.appendChild(deleteButton);
+          actionsCell.appendChild(editButton);
+        });
+
+        // Update the user count display
+        userCountElement.textContent = userCount;
+      });
+    }
+
+    function toggleEditForm(userId, row, userData) {
+      // Check if form is already displayed for the user
+      if (editFormDisplayed[userId]) {
+        removeEditForm(userId, row);
+        return;
+      }
+
+      // Add edit form below the current row
+      const formRow = row.insertRow(row.rowIndex + 1);
+      const formCell = formRow.insertCell(0);
+      formCell.colSpan = 3;
+
+      const editForm = document.createElement('div');
+      editForm.className = 'edit-form';
+      editForm.innerHTML = `
+        <input type="text" id="editFirstName" value="${userData.firstName}" placeholder="First Name">
+        <input type="text" id="editLastName" value="${userData.lastName}" placeholder="Last Name">
+        <input type="email" id="editEmail" value="${userData.email}" placeholder="Email">
+        <input type="text" id="editRole" value="${userData.role}" placeholder="Role">
+        <button onclick="updateUser('${userId}')">Update</button>
+      `;
+      formCell.appendChild(editForm);
+
+      // Track that the form is displayed for this user
+      editFormDisplayed[userId] = formRow;
+    }
+
+    function removeEditForm(userId, row) {
+      // Remove the form row from the table
+      const formRow = editFormDisplayed[userId];
+      row.deleteRow(formRow.rowIndex);
+
+      // Remove from tracking
+      delete editFormDisplayed[userId];
+    }
+
+    function updateUser(userId) {
+      const firstName = document.getElementById('editFirstName').value;
+      const lastName = document.getElementById('editLastName').value;
+      const email = document.getElementById('editEmail').value;
+      const role = document.getElementById('editRole').value;
+
+      // Update the user in Firebase
+      db.ref(`users/${userId}`).update({ firstName, lastName, email, role }).then(() => {
+        alert('User updated successfully');
+        location.reload(); // Reload the page after successful update
+      });
+    }
+
+    function addUser() {
+      const firstName = prompt("Enter First Name:");
+      const lastName = prompt("Enter Last Name:");
+      const email = prompt("Enter Email:");
+      const role = prompt("Enter Role:");
+
+      // Add new user to Firebase
+      const newUserRef = db.ref('users').push();
+      newUserRef.set({
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        role: role
+      }).then(() => {
+        alert('User added successfully');
+        location.reload(); // Reload the page after successful addition
+      });
+    }
+
+    function confirmDelete(userId) {
+      userIdToDelete = userId;
+      document.getElementById('confirmPopup').style.display = 'flex';
+    }
+
+    document.getElementById('confirmDelete').addEventListener('click', () => {
+      deleteUser(userIdToDelete);
+    });
+
+    document.getElementById('cancelDelete').addEventListener('click', () => {
+      document.getElementById('confirmPopup').style.display = 'none';
+    });
+
+    function deleteUser(userId) {
+      db.ref(`users/${userId}`).remove().then(() => {
+        document.getElementById('confirmPopup').style.display = 'none';
+        document.getElementById('successPopup').style.display = 'flex';
+        location.reload(); // Reload the page after successful deletion
+      });
+    }
+
+    function closePopup(popupId) {
+      document.getElementById(popupId).style.display = 'none';
+    }
+
+    // Load users when the page loads
+    window.onload = loadUsers;
+  </script>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Users</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    .user-list {
+      max-width: 600px;
+      margin: auto;
+      background: #ffffff;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+    }
+    .user-item {
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .user-item:last-child {
+      border-bottom: none;
+    }
+    .edit-button {
+      padding: 8px 12px;
+      color: #ffffff;
+      background-color: #007bff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+  </style>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+</head>
+<body>
+
+  <h1>Manage Users</h1>
+  <div class="user-list" id="userList"></div>
+
+  <script>
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyC02PDf8lXPB6nKJjXgtqS8LvIbmeO0r5E",
+      authDomain: "study-buddy-2aba2.firebaseapp.com",
+      projectId: "study-buddy-2aba2",
+      storageBucket: "study-buddy-2aba2.appspot.com",
+      messagingSenderId: "850734171944",
+      appId: "1:850734171944:web:16e758e5f3dcb6890cf21d",
+      measurementId: "G-VTMHQ6R1D4",
+      databaseURL: "https://study-buddy-2aba2-default-rtdb.asia-southeast1.firebasedatabase.app"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    // Fetch users from Firebase
+    function fetchUsers() {
+      const userList = document.getElementById("userList");
+      userList.innerHTML = ''; // Clear existing list
+      
+      db.ref("users").once("value").then((snapshot) => {
+        snapshot.forEach((userSnapshot) => {
+          const userId = userSnapshot.key;
+          const userData = userSnapshot.val();
+          
+          // Create user display item
+          const userItem = document.createElement("div");
+          userItem.classList.add("user-item");
+          userItem.innerHTML = `
+            <span>${userData.firstName} ${userData.lastName}</span>
+            <button class="edit-button" onclick="editUser('${userId}')">Edit</button>
+          `;
+          userList.appendChild(userItem);
+        });
+      });
+    }
+
+    // Function to redirect to edit page
+    function editUser(userId) {
+      window.location.href = `edit_user.html?userId=${userId}`;
+    }
+
+    // Load users on page load
+    window.onload = fetchUsers;
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Questions</title>
+    <link rel="stylesheet" href="../static/css/genAI.css">
+    <link rel="stylesheet" href="../static/css/home.css">
+    <link rel="stylesheet" href="../static/css/searchQs.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard">
+        <div class="dashboard-nav">
+            <header>
+                <a href="#!" class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </a>
+                <a href="#" class="brand-logo" style="font-weight: bold; color:black">
+                    <i class="fas fa-book-open" style="color: black;"></i> 
+                    <span>STUDY BUDDY</span>
+                </a>
+            </header>
+            <nav class="dashboard-nav-list">
+                <a href="./homemain.html" class="dashboard-nav-item" style="color:black">
+                    <i class="fas fa-home" style="color: black"></i> Home 
+                </a>
+                <div class="dashboard-nav-dropdown">
+                    <a href="./question-paper.html" class="dashboard-nav-item dashboard-nav-dropdown-toggle" style="color:black">
+                        <i class="fas fa-file-upload" style="color:black"></i> Question Paper
+                    </a>
+                    <div class="dashboard-nav-dropdown-menu">
+                        <a href="./upload.html" class="dashboard-nav-dropdown-item" style="color:black">
+                            <i class="fas fa-file-upload" style="color:black"></i> Upload
+                        </a>
+                        <a href="./download.html" class="dashboard-nav-dropdown-item" style="color:black">
+                            <i class="fas fa-file-download" style="color:black"></i> Download
+                        </a>
+                    </div>
+                </div>
+                <a href="./generateAI.html" class="dashboard-nav-item" style="color:black">
+                    <i class="fas fa-robot" style="color:black"></i> Generate Questions
+                </a>
+                <a href="#" class="dashboard-nav-item" style="color:black">
+                    <i class="fas fa-search" style="color:black"></i> Search Questions 
+                </a>
+                <a href="./developers.html" class="dashboard-nav-item" style="color:black">
+                    <i class="fas fa-users" style="color:black"></i> Developers 
+                </a>
+                <div class="nav-item-divider"></div>
+                <a href="./loginmain.html" class="dashboard-nav-item" style="color:black">
+                    <i class="fas fa-sign-out-alt" style="color: black;"></i> Logout 
+                </a>
+            </nav>
+        </div>
+
+        <div class="dashboard-app">
+            <header class="dashboard-toolbar">
+                <a href="#!" class="menu-toggle">
+                    <i class="fas fa-bars" style="color: black;"></i>
+                </a>
+            </header>
+            <div class="dashboard-content">
+                <br><br>
+                <div class="container" style="border: 1px solid rgb(240, 166, 48); box-shadow: 0 2px 10px rgb(240, 166, 48);">
+                    <div class="container mt-5">
+                        <h1 class="text-center" style="font-family: 'Playfair Display', serif; color: white;">Search Questions</h1><br><br>
+                
+                        <form id="questionForm">
+                            <div class="form-group mb-3">
+                                <label for="user_text" style="font-family: 'Playfair Display', serif; color: white;">Enter the Title you want the questions generated from:</label>
+                                <!-- <textarea class="form-control" id="user_text" rows="5" style="background-color: rgb(174, 174, 174);" placeholder="Enter the text"></textarea> -->
+                                 <input type="text" id="searchInput" placeholder="Enter title here" class="textInput form-control" style="background-color: rgb(174, 174, 174);" />
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="font-family: 'Playfair Display', serif; color: black; background-color: rgb(240, 166, 48);" id="searchBtn">Search Questions</button>
+                        </form>
+                        <div id="questionsContainer" class="mt-4"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <div id="loading-screen">
+        <div class="spinner"></div>
+        <div class="loading-text">Loading, please wait...</div>
+    </div>   
+    <div id="success-popup" class="popup hidden">
+        <div class="popup-content"> 
+            <h3 id="popup-message">Message</h3>
+            <p>Thank You</p>
+        </div>
+    </div> -->
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
+    <script>
+        // Firebase configuration (update with your Firebase config)
+        const firebaseConfig = {
+            apiKey: "AIzaSyC02PDf8lXPB6nKJjXgtqS8LvIbmeO0r5E",
+            authDomain: "study-buddy-2aba2.firebaseapp.com",
+            projectId: "study-buddy-2aba2",
+            storageBucket: "study-buddy-2aba2.appspot.com",
+            messagingSenderId: "850734171944",
+            appId: "1:850734171944:web:16e758e5f3dcb6890cf21d",
+            measurementId: "G-VTMHQ6R1D4",
+            databaseURL: "https://study-buddy-2aba2-default-rtdb.asia-southeast1.firebasedatabase.app"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // Function to calculate the percentage similarity between two strings
+        function calculateSimilarity(text1, text2) {
+            let longer = text1.length > text2.length ? text1 : text2;
+            let shorter = text1.length <= text2.length ? text1 : text2;
+            let longerLength = longer.length;
+
+            if (longerLength === 0) {
+                return 1.0;
+            }
+            return (longerLength - editDistance(longer, shorter)) / longerLength;
+        }
+
+        // Function to calculate the edit distance between two strings (Levenshtein distance)
+        function editDistance(s1, s2) {
+            const costs = [];
+            for (let i = 0; i <= s1.length; i++) {
+                let lastValue = i;
+                for (let j = 0; j <= s2.length; j++) {
+                    if (i === 0) {
+                        costs[j] = j;
+                    } else {
+                        if (j > 0) {
+                            let newValue = costs[j - 1];
+                            if (s1[i - 1] !== s2[j - 1]) {
+                                newValue = Math.min(Math.min(newValue, lastValue), costs[j]) + 1;
+                            }
+                            costs[j - 1] = lastValue;
+                            lastValue = newValue;
+                        }
+                    }
+                }
+                if (i > 0) {
+                    costs[s2.length] = lastValue;
+                }
+            }
+            return costs[s2.length];
+        }
+    document.getElementById('questionForm').addEventListener('submit', function(e) {
+    e.preventDefault(); // Prevent form from refreshing the page
+
+    let searchInput = document.getElementById('searchInput').value.trim();
+    let questionsContainer = document.getElementById('questionsContainer');
+    questionsContainer.innerHTML = ''; // Clear previous results
+
+    if (searchInput.length === 0) {
+        questionsContainer.innerHTML = '<p>Please enter a valid title.</p>';
+        return;
+    }
+
+    // Fetch questions from Firebase Realtime Database
+    const questionsRef = database.ref('questions');
+
+    // Perform a similarity check with titles in Firebase
+    questionsRef.once('value', (snapshot) => {
+        if (snapshot.exists()) {
+            let matchedQuestions = null;
+            snapshot.forEach((childSnapshot) => {
+                let title = childSnapshot.key;
+                let similarity = calculateSimilarity(searchInput.toLowerCase(), title.toLowerCase());
+
+                if (similarity >= 0.7) { // Matching similarity threshold 70%
+                    matchedQuestions = childSnapshot.val();
+                    questionsContainer.innerHTML += `<h3 style="color: white";><strong>Title:</strong> ${title}</h3>`;
+                    Object.keys(matchedQuestions).forEach((key) => {
+                        let question = matchedQuestions[key];
+                        questionsContainer.innerHTML += `<p style="color: white";><strong>Question:</strong> ${question}</p>`;
+                    });
+                }
+            });
+
+            if (!matchedQuestions) {
+                questionsContainer.innerHTML = '<p>No matching questions found.</p>';
+            }
+        } else {
+            questionsContainer.innerHTML = '<p>No questions available in the database.</p>';
+        }
+    });
+});
+
+    
+</script>
+</body>
+</html>

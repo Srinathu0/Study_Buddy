@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../static/css/home.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class='dashboard'>
+        <div class="dashboard-nav">
+            <header>
+                <a href="#!" class="menu-toggle">
+                    <i class="fas fa-bars" ></i>
+                </a>
+                <a href="#" class="brand-logo" style="font-weight: bold; color:black">
+                    <i class="fas fa-book-open" style="color: black;"></i> 
+                    <span>STUDY BUDDY</span>
+                </a>
+            </header>
+            <nav class="dashboard-nav-list">
+                <a href="#" class="dashboard-nav-item" style=" color:black">
+                    <i class="fas fa-home" style="color: black"></i>Home 
+                </a>
+                <!-- <a href="#" class="dashboard-nav-item" style=" color:black">
+                    <i class="fas fa-user-check" style="color: black"></i>Verify Users 
+                </a> -->
+                <a href="./manageUsers.html" class="dashboard-nav-item" style=" color:black">
+                    <i class="fas fa-users" style="color: black"></i>Manage Users 
+                </a>
+                <a href="./managePDF.html" class="dashboard-nav-item" style=" color:black">
+                    <i class="fas fa-file-alt" style="color: black"></i>Manage Question Paper 
+                </a>
+                <a href="./generateReport.html" class="dashboard-nav-item" style=" color:black">
+                    <i class="fas fa-chart-line" style="color: black"></i>Generate Report 
+                </a>              
+                <div class="dashboard-nav-dropdown">
+                    <a href="./question-paper.html" class="dashboard-nav-item dashboard-nav-dropdown-toggle" style=" color:black">
+                        <i class="fas fa-file-upload" style="color:black"></i> Question Paper
+                    </a>
+                    <div class="dashboard-nav-dropdown-menu">
+                        <a href="./upload.html" class="dashboard-nav-dropdown-item" style=" color:black">
+                            <i class="fas fa-file-upload" style="color:black"></i> Upload
+                        </a>
+                        <a href="./download.html" class="dashboard-nav-dropdown-item" style=" color:black">
+                            <i class="fas fa-file-download" style="color:black"></i> Download
+                        </a>
+                    </div>
+                </div>
+                <a href="./generateAI.html" class="dashboard-nav-item" style=" color:black">
+                    <i class="fas fa-robot" style="color:black"></i> Generate Questions
+                </a>
+                <a href="./searchQs.html" class="dashboard-nav-item" style=" color:black">
+                    <i class="fas fa-search" style="color:black"></i> Search Questions 
+                </a>
+                <a href="./developers.html" class="dashboard-nav-item" style=" color:black">
+                    <i class="fas fa-users" style="color:black"></i> Developers 
+                </a>
+                <div class="nav-item-divider"></div>
+                <a href="./loginmain.html" class="dashboard-nav-item" style=" color:black">
+                    <i class="fas fa-sign-out-alt" style="color: black;"></i> Logout 
+                </a>
+            </nav>
+        </div>
+        <div class='dashboard-app'>
+            <header class='dashboard-toolbar'>
+                <a href="#!" class="menu-toggle">
+                    <i class="fas fa-bars" style="color: black;"></i>
+                </a>
+            </header>
+            <div class='dashboard-content'>
+                <div class='container'>
+                    <div class='card'>
+                        <div class='card-header'>
+                            <h1 style="font-family: 'Playfair Display', serif;">Welcome to STUDY BUDDY</h1>
+                        </div>
+                        <div class='card-body'>
+                            <div class="features-section">
+                                <h2 style="font-family: 'Playfair Display', serif;">Revolutionize Collaborative Learning with StudyBuddy’s Generative AI!</h2>
+                                <br>
+                                <div class="features-container">
+                                  <div class="feature-box">
+                                    <i class="fa fa-upload" style="color: black;"></i>
+                                    <h3>Upload Question Paper</h3> 
+                                    <!-- <p>Upload question papers and share them with your peers securely</p> -->
+                                     <p>Share your knowledge, help others succeed upload your question papers now !</p>
+                                  </div>
+                                  <div class="feature-box">
+                                    <i class="fa fa-download"></i>
+                                    <h3>Download Question Paper</h3>
+                                    <!-- <p>Access question papers for study and revision</p> -->
+                                     <p>Unlock previous exam insights download question papers instantly !</p>
+                                  </div>
+                                  <div class="feature-box">
+                                    <i class="fa fa-question-circle"></i>
+                                    <h3>Generate Questions From Text</h3>
+                                    <!-- <p>Enter paragraphs and get the questions with GenAI Collaboration</p> -->
+                                     <p>Unleash AI-powered learning turn your text into insightful questions in seconds !</p>
+                                  </div>
+                                  <div class="feature-box">
+                                    <i class="fa fa-book"></i>
+                                    <h3>Knowledge Discovery</h3>
+                                    <!-- <p>Explore vast resources of educational content to enhance learning.</p> -->
+                                     <p>Smart AI at your service retrieve curated questions by simply entering a title!</p>
+                                  </div>
+                                </div>
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="module" src="../static/js/home.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</html>

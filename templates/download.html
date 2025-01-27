@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Files - Study Buddy</title>
+    <!-- <link rel="stylesheet" href="../src/css/styles.css"> -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet" href="../static/css/download.css">
+    <link rel="stylesheet" href="../static/css/home.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Sidebar Menu -->
+        <div class="dashboard-nav">
+            <header>
+                <a href="#!" class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </a>
+                <a href="#" class="brand-logo" style="font-weight: bold; color:black">
+                    <i class="fas fa-book-open" style="color: black;"></i> 
+                    <span>STUDY BUDDY</span>
+                </a>
+            </header>
+            <nav class="dashboard-nav-list">
+                <a href="./homemain.html" class="dashboard-nav-item" style=" color:black">
+                    <i class="fas fa-home" style="color: black"></i>Home 
+                </a>
+                <div class="dashboard-nav-dropdown">
+                    <a href="./question-paper.html" class="dashboard-nav-item dashboard-nav-dropdown-toggle" style=" color:black">
+                        <i class="fas fa-file-upload" style="color:black"></i> Question Paper
+                    </a>
+                    <div class="dashboard-nav-dropdown-menu">
+                        <a href="./upload.html" class="dashboard-nav-dropdown-item" style=" color:black">
+                            <i class="fas fa-file-upload" style="color:black"></i> Upload
+                        </a>
+                        <a href="./download.html" class="dashboard-nav-dropdown-item" style=" color:black">
+                            <i class="fas fa-file-download" style="color:black"></i> Download
+                        </a>
+                    </div>
+                </div>
+                <a href="./generateAI.html" class="dashboard-nav-item" style=" color:black">
+                    <i class="fas fa-robot" style="color:black"></i> Generate Questions
+                </a>
+                <a href="./searchQs.html" class="dashboard-nav-item" style=" color:black">
+                    <i class="fas fa-search" style="color:black"></i> Search Questions 
+                </a>
+                <a href="./developers.html" class="dashboard-nav-item" style=" color:black">
+                    <i class="fas fa-users" style="color:black"></i> Developers 
+                </a>
+                <div class="nav-item-divider"></div>
+                <a href="./loginmain.html" class="dashboard-nav-item" style=" color:black">
+                    <i class="fas fa-sign-out-alt" style="color: black;"></i> Logout 
+                </a>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="dashboard-app">
+            <header class="dashboard-toolbar">
+                <a href="#!" class="menu-toggle">
+                    <i class="fas fa-bars" style="color: black;"></i>
+                </a>
+            </header>
+            <div class="dashboard-content">
+                <div class="container">
+                    <main>
+                        <br><br>
+                        <section id="download-project" class="section-box" style="background-color: #042865;">
+                            <h2 style="font-family: 'Playfair Display', serif; color: white;">Download Question Papers</h2>
+                            <div class="instructions">
+                                <h3 style="font-family: 'Playfair Display', serif; color: white;">Instructions</h3>
+                                <ul>
+                                    <li style="font-family: 'Playfair Display', serif; color: white;">Please enter the Course Code in Captial Letters (eg: SWE1002, CSE3501)</li>
+                                </ul>
+                            </div>
+                            <form id="downloadProjectForm">
+                                <label for="projectCourseCode" style="font-family: 'Playfair Display', serif; color: white;">Course Code:</label>
+                                <input type="text" id="projectCourseCode" name="courseCode" style="background-color: rgb(174, 174, 174); border: 1px solid rgb(240, 166, 48); box-shadow: 0 2px 10px rgb(240, 166, 48);" placeholder="Course Code" required>
+                                <br><br>
+                                <div class="button-container">
+                                    <button id="backButton" type="button" onclick="window.history.back();" style="border: 1px solid rgb(240, 166, 48); box-shadow: 0 2px 10px rgb(240, 166, 48); background-color: rgb(240, 166, 48); color: black;">Back</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <button type="button" id="searchProjectButton" style="border: 1px solid rgb(240, 166, 48); box-shadow: 0 2px 10px rgb(240, 166, 48); background-color: rgb(240, 166, 48); color: black;">Search</button>
+                                </div>
+                            </form>
+                            <div id="projectList" class="project-list">
+                                <!-- Project list will be populated here -->
+                            </div>
+                            <!-- Loading screen -->
+                            <div id="loadingScreen" class="loading-screen" style="display: none;">
+                                <div class="spinner"></div>
+                                <p>Downloading...</p>
+                            </div> 
+                        </section>
+                    </main>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="module" src="../static/js/download.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</html>

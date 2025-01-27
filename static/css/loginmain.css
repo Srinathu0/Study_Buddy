@@ -1,0 +1,110 @@
+.divider:after,
+.divider:before {
+content: "";
+flex: 1;
+height: 1px;
+background: #eee;
+}
+.h-custom {
+height: calc(100% - 73px);
+}
+@media (max-width: 450px) {
+.h-custom {
+height: 100%;
+}
+}
+
+/* Loading Screen */
+#loading-screen {
+    /*display: none; /* Initially hidden */
+    position: fixed;
+    z-index: 9999;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(50, 50, 50, 0.7)); /* Smooth gradient background */
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0; /* For smooth transition */
+    visibility: hidden;
+    transition: opacity 0.5s ease, visibility 0s linear 0.5s;; /* Smooth fading in and out */
+}
+
+/* Show loading screen */
+#loading-screen.show {
+    visibility: visible;
+    opacity: 1; /* Transition to full opacity */
+    transition: opacity 0.5s ease;
+}
+
+/* Loading Spinner */
+.spinner {
+    border: 6px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top: 6px solid #ffffff;
+    width: 80px;
+    height: 80px;
+    animation: spin 1.2s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite; /* Smooth animation curve */
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.6); /* Glowing effect */
+}
+
+/* Spinner Animation */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+
+
+/* Adding text below spinner */
+.loading-text {
+    margin-top: 20px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 18px;
+    color: #ffffff;
+    letter-spacing: 0.05em;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.8); /* Subtle text glow */
+}
+
+
+/* Styling for the popup */
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.popup-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 300px;
+    width: 100%;
+}
+
+.popup.success .popup-content {
+    /*background-color: #4CAF50; /* Green for success */
+    background-color: rgb(240, 166, 48);
+    color: rgb(0, 0, 0);
+}
+
+.popup.error .popup-content {
+    background-color: #f44336; /* Red for error */
+    color: white;
+}
+
+.hidden {
+    display: none;
+}
+

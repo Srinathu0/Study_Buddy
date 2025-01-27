@@ -1,0 +1,65 @@
+#developers {
+    /*padding: 50px 20px;*/
+    text-align: center;
+    max-width: 1200px;   /* Set max-width for the container */
+    margin: 0 auto;      /* Center the container */
+}
+
+#developers h1 {
+    /* font-size: 2rem; */
+    color: white;
+    margin-bottom: 30px;
+    font-family: 'Playfair Display', serif;
+}
+
+.developer-cards {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.developer-card {
+    background-color: #042865;
+    border-radius: 8px;
+    /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); */
+    padding: 30px;              /* Increased padding for a larger card */
+    width: 250px;               /* Enlarge the developer card */
+    margin: 20px;
+    text-align: center;
+    transition: transform 0.3s; /* Add smooth hover transition */
+    border: 1px solid rgb(240, 166, 48);
+    box-shadow: 0 2px 10px rgb(240, 166, 48);
+}
+
+.developer-card:hover {
+    transform: scale(1.05);     /* Scale up on hover */
+}
+
+.developer-card img {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+    object-fit: cover;
+}
+
+.developer-card h3 {
+    font-size: 1.4rem;          /* Increase font size for names */
+    color: white;
+}
+
+.developer-card p {
+    color: white;
+    margin-bottom: 20px;
+}
+
+.social-links a {
+    margin: 0 5px;
+    color: white;
+    font-size: 1.2rem;
+    transition: color 0.3s;
+}
+
+.social-links a:hover {
+    color: #ff6600;
+}
