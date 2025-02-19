@@ -96,5 +96,5 @@ If you find this project useful, give it a ⭐️ and spread the word!
 
 ---
 
-> **Developed by [Srinathu0](https://github.com/Srinathu0) [Yagavi K](https://github.com/Yagavi8116)with 💻 and ❤️**
+> **Developed by [Srinathu0](https://github.com/Srinathu0) & [Yagavi K](https://github.com/Yagavi8116)with 💻 and ❤️**
 > Feel free to adjust or add more details as needed. Let me know if you'd like any changes!
