@@ -19,11 +19,11 @@ model = genai.GenerativeModel("models/gemini-2.0-flash-thinking-exp-01-21")
 # Function to generate questions from text using Gemini
 def generate_title_and_questions(text):
     title_response = model.generate_content(f"Generate a short title for the following content:\n\n{text}\n\nTitle:")
-    title = title_response.text.strip().replace("*", "") if title_response.text else "Untitled"
+    title = title_response.text.replace("*", "").strip() if title_response.text else "Untitled"
 
     # Generate questions based on the provided content
     question_response = model.generate_content(f"Generate questions from the following text:\n\n{text}\n\nQuestions:")
-    questions = question_response.text.strip().replace("*", "") if question_response.text else "No questions generated."
+    questions = question_response.text.replace("*", "").strip() if question_response.text else "No questions generated."
 
     return title, questions
 
